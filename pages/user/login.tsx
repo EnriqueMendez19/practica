@@ -49,13 +49,7 @@ const Login = () => {
                 </button>
 
                 <div className="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
-                    <a href="forgot-password" className="flex-2 underline">
-                        Forgot password?
-                    </a>
 
-                    <p className="flex-1 text-gray-500 text-md mx-4 my-1 sm:my-auto">
-                        or
-                    </p>
         
                     <a href="register" className="flex-2 underline">
                         Create an Account
