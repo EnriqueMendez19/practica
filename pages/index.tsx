@@ -16,10 +16,10 @@ const Home =()=> {
 export const getServerSideProps=async(context)=> {
   
   const res = await fetch(``)
-  const data = await res.json()
+  const products = await res.json()
 
  
-  return { props: { data } }
+  return { props: { product: products} }
 }
 
 export default Home;
