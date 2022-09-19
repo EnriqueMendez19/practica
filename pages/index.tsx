@@ -13,4 +13,14 @@ const Home =()=> {
      
   )
 }
+export const getServerSideProps=async(context)=> {
+  
+  const res = await fetch(``)
+  const data = await res.json()
+
+ 
+  return { props: { data } }
+}
+
 export default Home;
+
