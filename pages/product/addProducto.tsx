@@ -1,9 +1,56 @@
-import React from "react";
+import React, { useState, SyntheticEvent} from "react";
 import { Nav } from "../layout/nav";
 import { Foot } from "../layout/foot";
-const Add =()=>{
+import { useRouter } from "next/router";
+import { productService } from "../../utils/product.service";
 
+
+
+
+
+
+const Add =()=>{
+        
+    const [name, setName] = useState('');
+    const [notes, setNotes] = useState('');
+    const [precio, setPrecio] = useState(0);
+    const [no_IVA, setNo_IVA] = useState(0);
+    const [stock, setStock] = useState(0);
+    const [expiration_date, setExpiration_date] = useState(Date);
+    const [isActive, setIsActive] = useState(Boolean);
+
+    const route = useRouter();
+ 
+
+    const submit = async (e: SyntheticEvent) => {
+        e.preventDefault();
+        
+        let post = {
+            name:name,
+            precio: precio,
+            no_IVA:no_IVA,
+            IVA: 16,
+            expiration_date:expiration_date,
+            stock:stock,
+            isActive:isActive,
+            Notes: notes
+          };
+          
+          let response = await fetch('http://localhost:8080/products/newProduct', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(post)
+          });
+          let result = await response.json();
+          console.log(result);
+          await route.push('/')
+    }
     return (<div>
+
+
+
         <Nav/>
 
         
@@ -19,7 +66,7 @@ const Add =()=>{
                 Add Product
             </h2>
 
-            <form className="mt-10" method="POST">
+            <form className="mt-10" onSubmit={submit}>
              
                 <label  className="block text-xs font-semibold text-gray-600 uppercase">Product name</label>
                 <input id="product_name" type="text" name="product_name" placeholder="product name" 
@@ -27,44 +74,50 @@ const Add =()=>{
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
                     focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                    onChange={e=> setName(e.target.value)}
                     required />
 
               
                 <label  className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Price with IVA</label>
-                <input id="price_iva" type="number" name="password" placeholder="Price with IVA"
+                <input id="price_iva" type={"number"} placeholder="Price with IVA"
                     className="block w-full py-3 px-1 mt-2 mb-4
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
                     focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                    onChange={e=>setPrecio(parseInt(e.target.value))}
                     required />
 
                 <label  className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Price not IVA</label>
-                <input id="price_not_iva" type="number" name="password" placeholder="Price not IVA"
+                <input id="price_not_iva" type={"number"}  placeholder="Price not IVA"
                     className="block w-full py-3 px-1 mt-2 mb-4
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
                     focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                    onChange={e=>setNo_IVA(parseInt(e.target.value))}
                     required /> 
                 <label  className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Date expired</label>
-                <input id="date_expired" type="date" name="password" placeholder="Date expired"
+                <input id="date_expired" type="date" placeholder="Date expired"
                     className="block w-full py-3 px-1 mt-2 mb-4
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
                     focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                    onChange={e=>setExpiration_date(e.target.value)}
                     required /> 
                 <label  className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Notes</label>
                 <textarea id="notes" name="notes" placeholder="Notes"
                     className="block w-full py-3 px-1 mt-2 mb-4
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
-                    focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                    focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                    onChange={e=>setNotes(e.target.value)}>
                     </textarea> 
                 <label  className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Stock</label>
-                <input id="stock" type="number" name="stock" placeholder="Stock"
+                <input id="stock" type={"number"} name="stock" placeholder="Stock"
                     className="block w-full py-3 px-1 mt-2 mb-4
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
                     focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                    onChange={e=>setStock(parseInt(e.target.value))}
                     required /> 
                 <label  className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Active</label>
                 
@@ -91,5 +144,14 @@ const Add =()=>{
 
        <Foot/>
     </div>)
+   
+   
+   
+   
+   
 }
+
+
+
+
 export default Add;
